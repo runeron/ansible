@@ -1,0 +1,38 @@
+# This is the default ansible 'hosts' file.
+#
+# It should live in /etc/ansible/hosts
+#
+#   - Comments begin with the '#' character
+#   - Blank lines are ignored
+#   - Groups of hosts are delimited by [header] elements
+#   - You can enter hostnames or ip addresses
+#   - A hostname/ip can be a member of multiple groups
+#
+## Servers by location
+
+[ansible-datacenter1]
+LAB-ANSIBLE1	ansible_host=localhost		ansible_connection=local	ansible_user=wlab
+
+[ansible-datacenter2]
+#Such emptiness!
+
+[dns-datacenter1]
+LAB-UNBOUND1	ansible_host=10.150.5.250	ansible_connection=ssh		ansible_user=wlab
+
+[maas-datacenter1]
+LAB-MAAS1	ansible_host=10.150.5.211	ansible_connection=ssh		ansible_user=wlab
+LAB-MAAS2	ansible_host=10.150.5.212	ansible_connection=ssh		ansible_user=wlab
+LAB-MAAS3	ansible_host=10.150.5.213	ansible_connection=ssh		ansible_user=wlab
+LAB-MAAS-RGC1	ansible_host=10.150.5.220	ansible_connection=ssh		ansible_user=wlab
+
+[datacenter1:children]
+dns-datacenter1
+ansible-datacenter1
+maas-datacenter1
+
+[datacenter2:children]
+ansible-datacenter2
+
+[city:children]
+datacenter1
+datacenter2
