@@ -1,10 +1,12 @@
-- name: Install python for Ansible, if missing
+---
+
+- name: install | python
   become: yes
   raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
   register: output
   changed_when: no
 
-- name: Install aptitude for Ansible, if missing
+- name: install | aptitude
   become: yes
   raw: test -e /usr/bin/aptitude || (apt -y update && apt install -y aptitude)
   register: output

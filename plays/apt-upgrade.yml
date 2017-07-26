@@ -1,24 +1,23 @@
 ---
-- name: Upgrade apt-hosts
+
+- name: apt
   hosts: all
-  remote_user: wlab
   become: yes
-  become_method: sudo
 
   pre_tasks:
-    - include: ../tasks/bootstrap-ubuntu.yml
+    - include: ./bootstrap-ubuntu.yml
 
   tasks:
-    - name: APT - Update cache
+    - name: apt | -- update cache --
       apt:
         update_cache: yes
         cache_valid_time: 86400 # 24h
 
-    - name: APT - Upgrade all packages
+    - name: apt | upgrade all
       apt:
         upgrade: yes
 
-    - name: APT - Cleanup & remove
+    - name: apt | -- cleanup --
       apt:
         autoremove: yes
         autoclean: yes
