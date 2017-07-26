@@ -1,6 +1,6 @@
 ---
 
 - name: ansible management
-  hosts: all
+  hosts: ansible
   roles:
     - ansible
