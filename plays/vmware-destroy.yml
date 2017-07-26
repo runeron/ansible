@@ -1,0 +1,38 @@
+- name: vmware testing
+  hosts: localhost
+  gather_facts: no
+
+  vars_prompt:
+  - name: 'vcenter_user'
+    prompt: 'Enter username'
+    private: no
+    default: root
+  - name: 'vcenter_pass'
+    prompt: 'Enter password'
+    private: yes
+  - name: guest_name
+    prompt: 'Name of vm to destroy'
+    private: no
+    default: vm1
+
+  vars:
+  - vcenter_hostname: 10.150.5.12
+  - esxi_datacenter: ha-datacenter
+  - esxi_hostname: LAB-ESX1
+
+  tasks:
+  - name: destroy vm
+    vsphere_guest:
+      vcenter_hostname: '{{ vcenter_hostname }}'
+      username: '{{ vcenter_user }}'
+      password: '{{ vcenter_pass }}'
+      esxi:
+        datacenter: '{{ esxi_datacenter }}'
+        hostname: '{{ esxi_hostname }}'
+
+      validate_certs: no
+
+      guest: '{{ guest_name }}'
+      state: absent
+      force: yes
+

@@ -1,0 +1,64 @@
+- name: create vmware computer
+  hosts: localhost
+  gather_facts: no
+
+  vars_prompt:
+  - name: 'vcenter_user'
+    prompt: 'Enter username'
+    private: no
+    default: root
+  - name: 'vcenter_pass'
+    prompt: 'Enter password'
+    private: yes
+  - name: guest_name
+    prompt: 'Name of new ubuntu guest'
+    private: no
+    default: vm1
+
+  vars:
+  - vcenter_hostname: 10.150.5.12
+  - esxi_datacenter: ha-datacenter
+  - esxi_hostname: LAB-ESX1
+  - notes: 'Created by Anisble'
+  - network: 'VM Network'
+  - datastore: local_datastore1
+
+  tasks:
+  - name: create vm
+    vsphere_guest:
+      vcenter_hostname: '{{ vcenter_hostname }}'
+      username: '{{ vcenter_user }}'
+      password: '{{ vcenter_pass }}'
+      validate_certs: no
+      guest: '{{ guest_name }}'
+      state: present
+
+      vm_extra_config:
+          notes: '{{ notes }}'
+
+      vm_disk:
+        disk1:
+          size_gb: 20
+          type: thin
+          datastore: '{{ datastore }}'
+
+      vm_nic:
+        nic1:
+          type: vmxnet3
+          network: '{{ network }}'
+          network_type: standard
+
+      vm_hw_version: vmx-08
+
+      vm_hardware:
+        memory_mb: 2048
+        num_cpus: 2
+        osid: 'ubuntu64guest'
+        scsi: paravirtual
+        vm_cdrom:
+          type: "iso"
+          iso_path: "local_datastore1/_isofiles/ubuntu-16.04.2-server-amd64.iso"
+
+      esxi:
+        datacenter: '{{ esxi_datacenter }}'
+        hostname: '{{ esxi_hostname }}'

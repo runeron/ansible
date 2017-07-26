@@ -1,0 +1,34 @@
+---
+
+- name: update windows
+  hosts: windows
+  serial: 1
+  tasks:
+
+  - block:
+    - name: check for updates
+      win_updates:
+        category_names:
+        - SecurityUpdates
+        - CriticalUpdates
+        state: searched
+        log_path: 'c:\Temp\wu.txt'
+      register: update_count
+
+    - debug:
+        msg: 'Updates: {{ update_count.found_update_count }} | Reboot required: {{ update_count.reboot_required }}'
+    when: yes
+
+  - block:
+    - name: install updates
+      win_updates:
+        category_names:
+        - SecurityUpdates
+        - CriticalUpdates
+        log_path: 'c:\Temp\wu.txt'
+      register: update_result
+
+    - name: reboot
+      win_reboot:
+      when: update_result.reboot_required
+    when: update_count.found_update_count|int > 0
