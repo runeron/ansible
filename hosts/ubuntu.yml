@@ -1,9 +1,0 @@
-[ansible]
-MANAGEMENT
-
-[openstack]
-LAB-UBUNTU1
-
-[ubuntu:children]
-ansible
-openstack
