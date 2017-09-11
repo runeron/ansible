@@ -1,0 +1,14 @@
+---
+# tasks file for roles/runeron.postgres
+
+- name: install postgres
+  become: True
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - postgresql
+    - postgresql-contrib
+

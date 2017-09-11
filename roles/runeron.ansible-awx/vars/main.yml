@@ -1,0 +1,12 @@
+---
+# vars file for roles/runeron.ansible-awx
+
+host_port: 
+docker_registry:
+docker_registry_repository:
+docker_registry_username:
+
+pg_password:
+pg_database:
+pg_port: 5432
+

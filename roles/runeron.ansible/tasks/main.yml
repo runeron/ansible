@@ -1,0 +1,31 @@
+---
+# tasks file for roles/runeron.ansible
+
+- name: install pre-req
+  become: True
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - software-properties-common
+    - aptitude
+    - python
+    - python-pip
+
+- name: add ansible repo
+  become: True
+  apt_repository:
+    repo: ppa:ansible/ansible
+    state: present
+
+- name: install ansible
+  become: True
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - ansible

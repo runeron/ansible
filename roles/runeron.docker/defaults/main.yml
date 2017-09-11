@@ -1,0 +1,16 @@
+---
+# defaults file for roles/runeron.docker
+
+
+###
+##   Modify these parameters to suit your need
+#
+docker_uninstall_previous_version: false
+docker_edition: 'ce'
+
+
+###
+##   Do not modify parameters below
+#
+docker_pkg_name: "docker-{{ docker_edition }}"
+

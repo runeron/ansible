@@ -1,0 +1,24 @@
+---
+# tasks file for roles/runeron.ansible-awx
+
+- name: install dependencies
+  become: True
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-pip
+    - gettext
+    - build-essential
+
+- name: python modules
+  become: False
+  pip:
+    name: docker-py
+    state: present
+
+- name: clone ansible-awx repo
+  become: True
+  git:
+    repo: https://github.com/ansible/awx.git
+    dest: /src/ansible
